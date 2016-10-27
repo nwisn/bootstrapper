@@ -33,4 +33,19 @@ A `twogroup` object
 \description{
 Computes statistical significance using parametric, non-parametric, and bootstrap methods
 }
+\examples{
+
+# create dataset
+n <- 30
+X <- rnorm(n,0,1)
+Y <- rnorm(n,1,1)
+# run
+tg <- twogroup(X,Y)
+summary(tg)
+plot(tg)
+plot(tg, use="equal.var")
+plot(tg, use="unequal.var")
+plot(tg, use="rank")
+plot(tg, use="ES")
+}
 

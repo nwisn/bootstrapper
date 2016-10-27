@@ -66,6 +66,20 @@ boot_stats <- function(xy, X, Y, middle=mean.fast, spread=sd.fast, type="unequal
 #' @param amp Amplitude of dithering noise. 
 #' @param use Statistics to compute. Can use multiple. Defaults to all.
 #' @return A `twogroup` object
+#' @examples
+#' 
+#' # create dataset
+#' n <- 30
+#' X <- rnorm(n,0,1)
+#' Y <- rnorm(n,1,1)
+#' # run
+#' tg <- twogroup(X,Y)
+#' summary(tg)
+#' plot(tg)
+#' plot(tg, use="equal.var")
+#' plot(tg, use="unequal.var")
+#' plot(tg, use="rank")
+#' plot(tg, use="ES")
 #' @export
 twogroup <- function(X, Y, nboot=10000, replace=T, location=mean.fast, scale=sd.fast, dither=F, amp=.7,
                      use=c("equal.var","unequal.var","rank","Student","Welch","Wilcox","ES")){
