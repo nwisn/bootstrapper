@@ -39,6 +39,7 @@ Computes statistical significance using parametric, non-parametric, and bootstra
 n <- 30
 X <- rnorm(n,0,1)
 Y <- rnorm(n,1,1)
+
 # run
 tg <- twogroup(X,Y)
 summary(tg)
@@ -47,5 +48,19 @@ plot(tg, use="equal.var")
 plot(tg, use="unequal.var")
 plot(tg, use="rank")
 plot(tg, use="ES")
+
+# Compute false positive rates for some experimental design
+n1 <- 5; n2 <- 15
+nsim <- 300
+X <- matrix(rnorm(n1*nsim, mean=0, sd=3), nrow=nsim)
+Y <- matrix(rnorm(n2*nsim, mean=0, sd=1), nrow=nsim)
+simdat <- cbind(X,Y)
+
+sims <- apply(simdat, 1, FUN=function(x) twogroup(x[1:n1], x[(n1+1):(n1+n2)], nboot=300))
+ptabs <- lapply(sims, function(x) stattable(x)$p)
+fpr <- rowSums(sapply(ptabs, function(x) x<.05))/nsim
+names(fpr) <- rownames(ptabs[[1]])
+cbind(fpr)
+
 }
 
