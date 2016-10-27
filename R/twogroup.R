@@ -53,6 +53,7 @@ boot_stats <- function(xy, X, Y, middle=mean.fast, spread=sd.fast, type="unequal
 # }
 
 
+
 #' Two Group Comparison
 #' 
 #' Computes statistical significance using parametric, non-parametric, and bootstrap methods
@@ -72,6 +73,7 @@ boot_stats <- function(xy, X, Y, middle=mean.fast, spread=sd.fast, type="unequal
 #' n <- 30
 #' X <- rnorm(n,0,1)
 #' Y <- rnorm(n,1,1)
+#' 
 #' # run
 #' tg <- twogroup(X,Y)
 #' summary(tg)
@@ -80,6 +82,20 @@ boot_stats <- function(xy, X, Y, middle=mean.fast, spread=sd.fast, type="unequal
 #' plot(tg, use="unequal.var")
 #' plot(tg, use="rank")
 #' plot(tg, use="ES")
+#' 
+#' # Compute false positive rates for some experimental design
+#' n1 <- 5; n2 <- 15
+#' nsim <- 300
+#' X <- matrix(rnorm(n1*nsim, mean=0, sd=3), nrow=nsim)
+#' Y <- matrix(rnorm(n2*nsim, mean=0, sd=1), nrow=nsim)
+#' simdat <- cbind(X,Y)
+#' 
+#' sims <- apply(simdat, 1, FUN=function(x) twogroup(x[1:n1], x[(n1+1):(n1+n2)], nboot=300))
+#' ptabs <- lapply(sims, function(x) stattable(x)$p)
+#' fpr <- rowSums(sapply(ptabs, function(x) x<.05))/nsim
+#' names(fpr) <- rownames(ptabs[[1]])
+#' cbind(fpr)
+#' 
 #' @export
 twogroup <- function(X, Y, nboot=10000, replace=T, location=mean.fast, scale=sd.fast, dither=F, amp=.7,
                      use=c("equal.var","unequal.var","rank","Student","Welch","Wilcox","ES")){
